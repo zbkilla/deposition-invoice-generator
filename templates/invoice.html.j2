@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Invoice {{ job.job_id }}</title>
+<style>
+  /* ---- Branding: edit these to match your firm ---- */
+  :root { --accent: #1f3a5f; --muted: #666; --line: #ddd; }
+  * { box-sizing: border-box; }
+  body { font-family: Arial, Helvetica, sans-serif; color: #222; font-size: 13px;
+         margin: 0; padding: 40px; }
+  .header { display: flex; justify-content: space-between; align-items: flex-start;
+            border-bottom: 3px solid var(--accent); padding-bottom: 16px; }
+  .firm-name { font-size: 20px; font-weight: bold; color: var(--accent); }
+  .muted { color: var(--muted); }
+  .title { text-align: right; }
+  .title h1 { margin: 0; font-size: 28px; letter-spacing: 2px; color: var(--accent); }
+  .draft-badge { display: inline-block; margin-top: 6px; padding: 2px 8px;
+                 border: 1px solid var(--accent); color: var(--accent);
+                 font-size: 11px; letter-spacing: 1px; }
+  .meta { display: flex; justify-content: space-between; margin-top: 24px; gap: 24px; }
+  .meta h3 { margin: 0 0 4px; font-size: 11px; text-transform: uppercase;
+             letter-spacing: 1px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; }
+  table.items { margin-top: 28px; }
+  table.items th { text-align: left; background: var(--accent); color: #fff;
+                   padding: 8px 10px; font-size: 11px; text-transform: uppercase; }
+  table.items td { padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  td.num, th.num { text-align: right; }
+  table.totals { margin-top: 14px; }
+  table.totals td { padding: 6px 10px; text-align: right; }
+  table.totals .grand { font-size: 16px; font-weight: bold; color: var(--accent);
+                        border-top: 2px solid var(--accent); }
+  table.sessions { margin-top: 20px; font-size: 12px; }
+  table.sessions th, table.sessions td { padding: 4px 8px; text-align: left;
+                                         border-bottom: 1px solid var(--line); }
+  .pages { margin-top: 18px; font-size: 12px; }
+  .warn { margin-top: 16px; color: #a00; font-size: 12px; }
+  .footer { margin-top: 40px; font-size: 11px; color: var(--muted);
+            border-top: 1px solid var(--line); padding-top: 10px; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <!-- Add a logo here:  <img src="logo.png" height="48"> -->
+      <div class="firm-name">{{ firm.name }}</div>
+      <div class="muted">{{ firm.address }}</div>
+      <div class="muted">{{ firm.phone }} &nbsp;|&nbsp; {{ firm.email }}</div>
+    </div>
+    <div class="title">
+      <h1>INVOICE</h1>
+      <div class="muted">{{ created_at }}</div>
+      <div class="draft-badge">DRAFT</div>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div>
+      <h3>Bill To</h3>
+      <div>{{ job.client_name }}</div>
+      {% if job.client_email %}<div class="muted">{{ job.client_email }}</div>{% endif %}
+    </div>
+    <div>
+      <h3>Job</h3>
+      <div>#{{ job.job_id }} &mdash; {{ job.case_caption }}</div>
+      <div class="muted">Witness: {{ job.witness_name }}</div>
+      <div class="muted">Date: {{ job.depo_date }}{% if job.location %} &middot; {{ job.location }}{% endif %}</div>
+    </div>
+  </div>
+
+  {% if sessions %}
+  <table class="sessions">
+    <tr><th>Session date</th><th>Start</th><th>End</th></tr>
+    {% for s in sessions %}
+    <tr><td>{{ s.session_date or job.depo_date }}</td><td>{{ s.start_time }}</td><td>{{ s.end_time }}</td></tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+
+  <table class="items">
+    <tr>
+      <th>Description</th><th class="num">Qty</th><th>Unit</th>
+      <th class="num">Unit price</th><th class="num">Amount</th>
+    </tr>
+    {% for it in items %}
+    <tr>
+      <td>{{ it.description }}</td>
+      <td class="num">{{ "%g"|format(it.quantity) }}</td>
+      <td>{{ it.unit }}</td>
+      <td class="num">{{ it.unit_price | money }}</td>
+      <td class="num">{{ it.amount | money }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <table class="totals">
+    <tr><td>Subtotal</td><td style="width:18%">{{ subtotal | money }}</td></tr>
+    <tr><td class="grand">Total</td><td class="grand">{{ total | money }}</td></tr>
+  </table>
+
+  <div class="meta pages">
+    <div>Transcript pages: <strong>{{ docs.transcript_pages }}</strong></div>
+    <div>Exhibit pages: <strong>{{ docs.exhibit_pages }}</strong></div>
+  </div>
+
+  {% if docs.unreadable %}
+  <div class="warn">
+    WARNING - these files could not be read and were NOT counted:
+    <ul>{% for u in docs.unreadable %}<li>{{ u.file_path }} ({{ u.error }})</li>{% endfor %}</ul>
+  </div>
+  {% endif %}
+
+  <div class="footer">
+    Draft generated automatically from PDF page counts and job data. Review every line before sending.
+  </div>
+</body>
+</html>

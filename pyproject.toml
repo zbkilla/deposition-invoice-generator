@@ -1,0 +1,16 @@
+[project]
+name = "invoice-generator"
+version = "0.1.0"
+description = "Stage 0 draft-invoice generator for deposition jobs"
+requires-python = ">=3.11"
+dependencies = [
+    "pypdf>=4.2.0",
+    "pyyaml>=6.0",
+    "jinja2>=3.1",
+]
+
+# package = false -> uv only installs the dependencies into the venv and does
+# not try to build this directory as an installable package. The modules in
+# invoice/ are imported directly because cli.py sits next to them.
+[tool.uv]
+package = false

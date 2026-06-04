@@ -1,0 +1,4 @@
+job_id,case_caption,witness_name,depo_date,client_name,client_email,location,copies,expedite,e_transcript,rough_draft,session_date,start_time,end_time,notes
+JOB1001,Smith v. Jones,John Smith,2026-05-20,Acme Law LLP,billing@acmelaw.com,"Chicago, IL",1,none,yes,no,2026-05-20,09:00,12:00,morning session
+JOB1001,Smith v. Jones,John Smith,2026-05-20,Acme Law LLP,billing@acmelaw.com,"Chicago, IL",1,none,yes,no,2026-05-20,13:00,18:30,afternoon session ran late
+JOB1002,Doe v. Roe,Jane Doe,2026-05-22,Beta Legal Group,ap@betalegal.com,Remote / Zoom,0,daily,no,yes,2026-05-22,10:00,14:00,single session

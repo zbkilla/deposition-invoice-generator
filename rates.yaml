@@ -1,0 +1,35 @@
+# Rate card. EVERY PRICE BELOW IS AN EXAMPLE -- replace with your real rates.
+# Page-based charges use the page counts read from the PDFs (free, no AI).
+# Time-based charges use the session start/end times from your jobs CSV.
+# To turn a line off, set its price to 0.
+
+currency: "USD"
+
+# --- Per-page charges (driven by PDF page counts) ---
+transcript:
+  original_per_page: 4.50   # certified original transcript
+  copy_per_page: 1.50       # each additional certified copy (count from CSV "copies")
+  minimum_pages: 0          # bill at least this many transcript pages (0 = off)
+
+exhibits:
+  per_page: 0.50            # scanning / handling, per exhibit page
+  minimum_charge: 0.00      # flat floor for exhibit handling (0 = off)
+
+rough_draft:
+  per_page: 1.25            # uncertified rough / ASCII, when ordered (CSV flag)
+
+# --- Time charges (driven by session start/end times) ---
+appearance:
+  per_session: 75.00        # appearance / per-diem, charged once per session
+  hourly: 0.00              # OR bill per on-record hour: set per_session 0, this > 0
+
+after_hours:
+  threshold: "17:00"        # sessions running past this incur a surcharge
+  hourly: 60.00             # per hour (or part) past the threshold
+  flat: 0.00                # OR one flat surcharge instead: set hourly 0, this > 0
+
+# --- Flat add-ons (toggled per job in the jobs CSV) ---
+add_ons:
+  e_transcript: 25.00                 # electronic / condensed delivery (CSV flag)
+  expedite_same_day_multiplier: 2.00  # multiplies the certified original price
+  expedite_daily_multiplier: 1.50     # next-day delivery

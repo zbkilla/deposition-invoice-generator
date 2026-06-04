@@ -1,0 +1,58 @@
+# DRAFT INVOICE
+
+**{{ firm.name }}**
+{{ firm.address }}
+{{ firm.phone }} | {{ firm.email }}
+
+Generated: {{ created_at }}
+Currency: {{ currency }}
+
+---
+
+## Bill To
+{{ job.client_name }}
+{% if job.client_email %}
+{{ job.client_email }}
+{% endif %}
+
+## Job
+- Job #: {{ job.job_id }}
+- Case: {{ job.case_caption }}
+- Witness: {{ job.witness_name }}
+- Date: {{ job.depo_date }}
+{% if job.location %}
+- Location: {{ job.location }}
+{% endif %}
+
+{% if sessions %}
+## Sessions
+
+| Date | Start | End |
+|---|---|---|
+{% for s in sessions %}
+| {{ s.session_date or job.depo_date }} | {{ s.start_time }} | {{ s.end_time }} |
+{% endfor %}
+
+{% endif %}
+## Documents
+- Transcript pages: {{ docs.transcript_pages }}
+- Exhibit pages: {{ docs.exhibit_pages }}
+{% if docs.unreadable %}
+
+> WARNING - these files could not be read and were NOT counted:
+{% for u in docs.unreadable %}
+>  - {{ u.file_path }} ({{ u.error }})
+{% endfor %}
+{% endif %}
+
+## Charges
+
+| Description | Qty | Unit | Unit Price | Amount |
+|---|---:|---|---:|---:|
+{% for it in items %}
+| {{ it.description }} | {{ "%g"|format(it.quantity) }} | {{ it.unit }} | {{ it.unit_price | money }} | {{ it.amount | money }} |
+{% endfor %}
+| **Total** |  |  |  | **{{ total | money }}** |
+
+---
+*DRAFT - generated automatically from page counts and job data. Review every line before sending.*

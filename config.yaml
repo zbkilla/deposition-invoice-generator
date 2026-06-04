@@ -1,0 +1,33 @@
+# Stage 0 configuration. Edit these to match your firm and machine.
+
+# Root of the Egnyte content as it appears on THIS computer.
+# On the billing machine this is the mapped Egnyte drive, e.g.
+#   Windows:  Z:/Shared/Depositions
+#   Mac:      /Volumes/Egnyte/Shared/Depositions
+# For local testing it points at the bundled sample folder.
+egnyte_root: "/root/invoice-generator/sample_egnyte"
+
+# How each job's files are laid out under egnyte_root.
+# {job_id} is replaced with the job number from your jobs CSV. Expected tree:
+#   <egnyte_root>/<job_id>/<transcript_subdir>/*.pdf
+#   <egnyte_root>/<job_id>/<exhibit_subdir>/*.pdf
+job_folder: "{job_id}"
+transcript_subdir: "transcripts"
+exhibit_subdir: "exhibits"
+
+# Where the SQLite database and rendered drafts are written.
+database: "/root/invoice-generator/data/invoices.db"
+output_dir: "/root/invoice-generator/output"
+
+# Invoice layout. Edit THIS FILE (not the code) to change how the draft looks.
+#   invoice.md.j2   -> simple markdown draft (default)
+#   invoice.html.j2 -> branded, print/PDF-ready invoice
+# You can also override per run with:  uv run cli.py invoice --job X --template <path>
+template: "/root/invoice-generator/templates/invoice.md.j2"
+
+# Your firm details, printed at the top of every draft.
+firm:
+  name: "Your Court Reporting Firm, LLC"
+  address: "123 Main St, Suite 100, City, ST 00000"
+  phone: "(000) 000-0000"
+  email: "billing@yourfirm.com"
