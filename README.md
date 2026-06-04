@@ -70,6 +70,16 @@ Convert the HTML draft to a PDF (requires `weasyprint`):
 weasyprint output/invoice_JOB1001_<stamp>.html output/invoice_JOB1001_<stamp>.pdf
 ```
 
+### Example output
+
+Pre-rendered sample drafts (produced by the quick-start above) live in
+[`examples/`](examples/) — `invoice_JOB1001.md`, `invoice_JOB1001.html`, and
+`invoice_JOB1002.md` — so you can see what the tool produces without running it.
+
+Generated `data/` and `output/` contents stay out of version control on purpose:
+they are rebuilt on every run, and once real depositions flow through, those
+folders would hold privileged client data that must never be committed.
+
 ## Configuration
 
 Everything you change to fit your firm is **data, not code**:
